@@ -1,24 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unit_testing_demo/UI/home.dart';
-import 'package:unit_testing_demo/UI/signup_screen.dart';
 import 'package:unit_testing_demo/core/constant/string_constant.dart';
 import 'package:unit_testing_demo/core/constant/typography_constant.dart';
 import 'package:unit_testing_demo/core/utils/common_utils.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController passwordTextController = TextEditingController();
+  final TextEditingController nameTextController = TextEditingController();
+  final TextEditingController rePasswordTextController = TextEditingController();
 
   bool validate = false;
 
@@ -33,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          title: Text(widget.title),
+          title: const Text('SignUp Page'),
         ),
         body:  SingleChildScrollView(
           child: Center(
@@ -42,17 +41,45 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: [
                   const SizedBox(height: 20,),
-                  Text(AppString.loginPageText,
+                  Text(AppString.signupPageText,
                       style: AppTextStyle.text1),
                   const SizedBox(height: 40,),
+                  ///Name
                   FittedBox(
                     child: Container(
                       padding: const EdgeInsets.only(left: 20),
                       width: MediaQuery.of(context).size.width / 1.25,
                       height: 60,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blueGrey.shade100
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blueGrey.shade100
+                      ),
+                      child: TextFormField(
+                        key: const Key("addUserId"),
+                        controller: nameTextController,
+                        decoration: const InputDecoration(
+                          labelText: 'Name ',
+                          border: InputBorder.none,
+                        ),
+                        validator: CommonUtils.isName,
+                        onChanged:(String value) {
+                          if(validate){
+                            _formKey.currentState!.validate();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                  ///Email
+                  FittedBox(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      width: MediaQuery.of(context).size.width / 1.25,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blueGrey.shade100
                       ),
                       child: TextFormField(
                         key: const Key("addUserId"),
@@ -63,14 +90,42 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         validator: CommonUtils.isValidateEmail,
                         onChanged:(String value) {
-                        if(validate){
-                        _formKey.currentState!.validate();
-                       }
+                          if(validate){
+                            _formKey.currentState!.validate();
+                          }
                         },
                       ),
                     ),
                   ),
                   const SizedBox(height: 20,),
+                  ///password
+                  FittedBox(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      width: MediaQuery.of(context).size.width / 1.25,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blueGrey.shade100
+                      ),
+                      child: TextFormField(
+                        key: const Key("addUserId"),
+                        controller: passwordTextController,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                          border: InputBorder.none,
+                        ),
+                        validator: CommonUtils.isValidateEmail,
+                        onChanged:(String value) {
+                          if(validate){
+                            _formKey.currentState!.validate();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                  ///re-password
                   FittedBox(
                     child: Container(
                       padding: EdgeInsets.only(left: 20),
@@ -83,46 +138,27 @@ class _MyHomePageState extends State<MyHomePage> {
                       child:TextFormField(
                         key: const Key("addPassword"),
                         obscureText: true,
-                        controller: passwordTextController,
+                        controller: rePasswordTextController,
                         decoration:  const InputDecoration(
-                          labelText: 'Password',
+                          labelText: 'Re-Password',
                           border: InputBorder.none,
                         ),
                         validator: CommonUtils.isPasswordValid,
                         onChanged: (value) {
-                        if(validate){
-                           _formKey.currentState!.validate();
-                         }
-                         },
+                          if(validate){
+                            _formKey.currentState!.validate();
+                          }
+                        },
                       ),
-                      // TextFieldView(
-                      //   key:  const Key("addPassword"),
-                      //   textFieldController: passwordTextController,
-                      //   valueDidChange: (value) {
-                      //     if(validate){
-                      //       _formKey.currentState!.validate();
-                      //     }
-                      //   },
-                      //   onValidate: CommonUtils.isPasswordValid,
-                      //   text: 'Password',
-                      //   isVisible: true,
-                      //   obsecure: true,
-                      // ),
                     ),
                   ),
-                  const SizedBox(height: 13,),
-                  GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpScreen()));
-                      },
-                      child: Text('SignUP')),
                   const SizedBox(height: 30,),
                   GestureDetector(
                     onTap: () async {
-                     if(_formKey.currentState!.validate()){
-                       _formKey.currentState?.save();
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=> const Home()));
-                     }
+                      if(_formKey.currentState!.validate()){
+                        _formKey.currentState?.save();
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Home()));
+                      }
                     },
                     child: Container(
                       key: Key("signInButton"),
@@ -134,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       child: Center(
                         child: Text(AppString.loginText,
-                        style: AppTextStyle.text2,),
+                          style: AppTextStyle.text2,),
                       ),
                     ),
                   )

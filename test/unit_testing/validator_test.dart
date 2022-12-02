@@ -2,6 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:unit_testing_demo/core/utils/validator_helper.dart';
 
 void main(){
+  test('empty name test', (){
+  String? result = ValidatorHelper.nameValidator('');
+  expect(result, 'Please enter a valid email');
+  });
   test(
       'empty email test', () {
     String result = ValidatorHelper.emailValidator('');

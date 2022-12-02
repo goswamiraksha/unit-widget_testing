@@ -17,6 +17,13 @@ class CommonUtils {
     }
   }
 
+  static String? isName(String? name) {
+    if (name == null || name.isEmpty) {
+      return 'Please type your email.';
+    }
+    return null;
+  }
+
   static String? isPasswordValid(String? password, [int minLength = 8]) {
     if (password == null || password.isEmpty) {
       return 'Please type your password.';

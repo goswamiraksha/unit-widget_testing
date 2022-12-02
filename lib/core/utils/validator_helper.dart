@@ -13,6 +13,12 @@ class ValidatorHelper{
     }
     return message;
   }
+  static String nameValidator(final String name)
+  {
+    String message = '';
+    if(name.trim().isEmpty)message = 'Please enter the name';
+    return message;
+  }
 
   static String passwordValidator(final String password)
   {

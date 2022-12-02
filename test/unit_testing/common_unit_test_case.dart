@@ -3,6 +3,13 @@ import 'package:unit_testing_demo/core/utils/common_utils.dart';
 
 void main(){
   test(
+      'empty name test', ()
+    {
+      String? result = CommonUtils.isName('name');
+      expect(result, 'Please enter the name');
+    }
+  );
+  test(
       'valid email test', (){
     String? result = CommonUtils.isValidateEmail('asgfjfkf.com');
     expect(result, 'Please enter a valid email');
